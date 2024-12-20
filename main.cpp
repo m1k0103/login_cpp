@@ -1,31 +1,35 @@
 #include <iostream>
-//#include "imgui.h"
 #include <sqlite3.h>
+using namespace std;
+
+// &x = the address of x
+// *y = the value at the address y	 (aka a pointer)
 
 
-int check_error(int exit, char* messageError){
-	if (exit != SQLITE_OK){
-		std::cerr << "Error" << '\n';
-	}
-	else{
-		std::cout << "No error performing operation." << '\n';
+sqlite3* db;
+
+
+void openDB(char* filename, sqlite3* database){
+	int opened = sqlite3_open(filename, &database);
+	if (opened){
+		cout << "Database couldnt be opened %s \n" << sqlite3_errmsg(database);
+	}else{
+		cout << "Opened successfully \n";
+		db = database;
 	}
 }
 
+void createTable(char* filename, sqlite3* database){
+	int opened = sqlite3_open(filename, &database);
+	sqlite3_exec(); // carry on from here please
+}
 
 
 int main() {
-	sqlite3* DB;
-	int exit = 0;
-	exit = sqlite3_open("example.db", &DB);
-	char* messageError;
+	char* filename = "database.db";
+	openDB(filename, db);
 
-	string sql_query = "CREATE TABLE test(id int primary key not null autoincrement,name text, surname text);";
-	exit = sqlite3_exec(DB,sql_query.c_str(),NULL,0,&messageError);
-	check_error(exit, messageError);
+	createTable();
 
-	
-
-	return 0;
-
+	sqlite3_close(db);
 }
